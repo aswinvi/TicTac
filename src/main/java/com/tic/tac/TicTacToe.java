@@ -21,6 +21,8 @@ public class TicTacToe {
 
 		getInputFromPlayer1(boardPositions, scanner);
 
+		getInputFromPlayer2(boardPositions, scanner);
+
 	}
 
 	private static void printTicTacBoard(List<String> boardPositions) {
@@ -39,6 +41,15 @@ public class TicTacToe {
 
 		int nextPosition = scanner.nextInt();
 		boardPositions.set(nextPosition - 1, "X");
+
+	}
+
+	private static void getInputFromPlayer2(List<String> boardPositions, Scanner scanner) {
+
+		System.out.println("Key in the position to Play : ");
+
+		int nextPosition = scanner.nextInt();
+		boardPositions.set(nextPosition - 1, "O");
 
 	}
 

@@ -20,6 +20,8 @@ class TicTacToeTest {
 
 	@Mock
 	List<String> boardPositions;
+	
+	List<String> boardPositionsList = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
 	@BeforeEach
 	void init() {
@@ -30,7 +32,7 @@ class TicTacToeTest {
 	void printGameBoard() {
 		mockBoardPositionsListValues();
 
-		mockingScannerInput("5");
+		mockingScannerInput("5\n3\n");
 
 		TicTacToe.playGame(boardPositions);
 
@@ -53,15 +55,24 @@ class TicTacToeTest {
 	@Test
 	void shouldDisplay_X_WhenPlayerOnePlays() {
 
-		mockingScannerInput("6");
+		mockingScannerInput("5\n3\n");
 
-		List<String> boardPositions1 = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+		TicTacToe.playGame(boardPositionsList);
 
-		TicTacToe.playGame(boardPositions1);
-
-		assertEquals("X", boardPositions1.get(5));
+		assertEquals("X", boardPositionsList.get(4));
 	}
 
+	@Test
+	void shouldDisplay_O_WhenPlayerTwoPlays() {
+
+		mockingScannerInput("5\n3\n");
+
+		TicTacToe.playGame(boardPositionsList);
+
+		assertEquals("X", boardPositionsList.get(4));
+	}
+
+	
 	private void mockBoardPositionsListValues() {
 		Mockito.when(boardPositions.get(0)).thenReturn("1");
 		Mockito.when(boardPositions.get(1)).thenReturn("2");
