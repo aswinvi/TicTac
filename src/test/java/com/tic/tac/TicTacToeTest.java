@@ -1,5 +1,8 @@
 package com.tic.tac;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,27 +13,27 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-
 class TicTacToeTest {
-	
+
 	@InjectMocks
-	TicTacToe ticTac = new TicTacToe ();
-	
+	TicTacToe ticTac = new TicTacToe();
+
 	@Mock
 	List<String> boardPositions;
-	
+
 	@BeforeEach
 	void init() {
-	    MockitoAnnotations.openMocks(this);
+		MockitoAnnotations.openMocks(this);
 	}
-	
-	
+
 	@Test
 	void printGameBoard() {
 		mockBoardPositionsListValues();
-		
+
+		mockingScannerInput("5");
+
 		TicTacToe.playGame(boardPositions);
-		
+
 		Mockito.verify(boardPositions, Mockito.times(1)).get(0);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(1);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(2);
@@ -42,6 +45,22 @@ class TicTacToeTest {
 		Mockito.verify(boardPositions, Mockito.times(1)).get(8);
 	}
 
+	private void mockingScannerInput(String mockInput) {
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(mockInput.getBytes());
+		System.setIn(inputStream);
+	}
+
+	@Test
+	void shouldDisplay_X_WhenPlayerOnePlays() {
+
+		mockingScannerInput("6");
+
+		List<String> boardPositions1 = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+
+		TicTacToe.playGame(boardPositions1);
+
+		assertEquals("X", boardPositions1.get(5));
+	}
 
 	private void mockBoardPositionsListValues() {
 		Mockito.when(boardPositions.get(0)).thenReturn("1");
