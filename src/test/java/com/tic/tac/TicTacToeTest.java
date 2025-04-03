@@ -34,11 +34,11 @@ class TicTacToeTest {
 
 		mockingScannerInput("5\n3\n");
 
-		TicTacToe.playGame(boardPositions);
+		TicTacToe.playGame(boardPositions, "");
 
 		Mockito.verify(boardPositions, Mockito.times(1)).get(0);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(1);
-		Mockito.verify(boardPositions, Mockito.times(3)).get(2);
+		Mockito.verify(boardPositions, Mockito.times(1)).get(2);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(3);
 		Mockito.verify(boardPositions, Mockito.times(3)).get(4);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(5);
@@ -57,7 +57,7 @@ class TicTacToeTest {
 
 		mockingScannerInput("5\n3\n");
 
-		TicTacToe.playGame(boardPositionsList);
+		TicTacToe.playGame(boardPositionsList, "");
 
 		assertEquals("X", boardPositionsList.get(4));
 	}
@@ -67,7 +67,7 @@ class TicTacToeTest {
 
 		mockingScannerInput("5\n3\n");
 
-		TicTacToe.playGame(boardPositionsList);
+		TicTacToe.playGame(boardPositionsList, "");
 
 		assertEquals("X", boardPositionsList.get(4));
 	}
@@ -79,11 +79,11 @@ class TicTacToeTest {
 
 		List<String> positionList = Arrays.asList("1", "O", "3", "4", "5", "6", "7", "8", "9");
 
-		TicTacToe.playGame(positionList);
+		TicTacToe.playGame(positionList, "");
 
 		assertEquals("O", positionList.get(1));
 	}
-	
+
 	@Test
 	void shouldNotUpdateOInPositionIfInputNotValid() {
 
@@ -91,9 +91,33 @@ class TicTacToeTest {
 
 		List<String> positionList = Arrays.asList("1", "X", "3", "4", "5", "6", "7", "8", "9");
 
-		TicTacToe.playGame(positionList);
+		TicTacToe.playGame(positionList, "X");
 
 		assertEquals("X", positionList.get(1));
+	}
+
+	@Test
+	void shouldallowPlayer2OnlyIfLastPlayedIsPlayer1() {
+
+		mockingScannerInput("2\n3\n");
+
+		List<String> positionList = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+
+		TicTacToe.playGame(positionList, "X");
+
+		assertEquals("3", positionList.get(2));
+	}
+
+	@Test
+	void shouldallowPlayer1OnlyIfHePlaysFirstOrLastPlayerIsNotHim() {
+
+		mockingScannerInput("2\n3\n");
+
+		List<String> positionList = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+
+		TicTacToe.playGame(positionList, "O");
+
+		assertEquals("3", positionList.get(2));
 	}
 
 	private void mockBoardPositionsListValues() {

@@ -8,20 +8,26 @@ public class TicTacToe {
 
 	public static void main(String[] args) {
 
+		String lastPlayed = "";
+
 		List<String> boardPositions = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
-		playGame(boardPositions);
+		playGame(boardPositions, lastPlayed);
 	}
 
-	static void playGame(List<String> boardPositions) {
+	static void playGame(List<String> boardPositions, String lastPlayed) {
 
 		Scanner scanner = new Scanner(System.in);
 
 		printTicTacBoard(boardPositions);
 
-		getInputFromPlayer1(boardPositions, scanner);
-
-		getInputFromPlayer2(boardPositions, scanner);
+		if (lastPlayed.equals("") || "O".equals(lastPlayed)) {
+			getInputFromPlayer1(boardPositions, scanner);
+			lastPlayed = "X";
+		} else {
+			getInputFromPlayer2(boardPositions, scanner);
+			lastPlayed = "O";
+		}
 
 	}
 
@@ -46,7 +52,7 @@ public class TicTacToe {
 	}
 
 	private static void setPositionIfValidInput(List<String> boardPositions, int nextPosition, String player) {
-		
+
 		if (isValidInput(boardPositions, nextPosition)) {
 			System.out.println("Invalid Move!! Please try another Position : ");
 		} else {
@@ -63,7 +69,7 @@ public class TicTacToe {
 		System.out.println("Key in the position to Play : ");
 
 		int nextPosition = scanner.nextInt();
-		
+
 		setPositionIfValidInput(boardPositions, nextPosition, "O");
 	}
 
