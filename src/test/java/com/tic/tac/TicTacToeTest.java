@@ -38,7 +38,7 @@ class TicTacToeTest {
 
 		Mockito.verify(boardPositions, Mockito.times(1)).get(0);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(1);
-		Mockito.verify(boardPositions, Mockito.times(1)).get(2);
+		Mockito.verify(boardPositions, Mockito.times(3)).get(2);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(3);
 		Mockito.verify(boardPositions, Mockito.times(3)).get(4);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(5);
@@ -82,6 +82,18 @@ class TicTacToeTest {
 		TicTacToe.playGame(positionList);
 
 		assertEquals("O", positionList.get(1));
+	}
+	
+	@Test
+	void shouldNotUpdateOInPositionIfInputNotValid() {
+
+		mockingScannerInput("2\n3\n");
+
+		List<String> positionList = Arrays.asList("1", "X", "3", "4", "5", "6", "7", "8", "9");
+
+		TicTacToe.playGame(positionList);
+
+		assertEquals("X", positionList.get(1));
 	}
 
 	private void mockBoardPositionsListValues() {
