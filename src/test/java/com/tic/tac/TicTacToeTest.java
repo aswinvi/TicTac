@@ -20,7 +20,7 @@ class TicTacToeTest {
 
 	@Mock
 	List<String> boardPositions;
-	
+
 	List<String> boardPositionsList = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
 	@BeforeEach
@@ -40,7 +40,7 @@ class TicTacToeTest {
 		Mockito.verify(boardPositions, Mockito.times(1)).get(1);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(2);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(3);
-		Mockito.verify(boardPositions, Mockito.times(1)).get(4);
+		Mockito.verify(boardPositions, Mockito.times(3)).get(4);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(5);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(6);
 		Mockito.verify(boardPositions, Mockito.times(1)).get(7);
@@ -72,7 +72,18 @@ class TicTacToeTest {
 		assertEquals("X", boardPositionsList.get(4));
 	}
 
-	
+	@Test
+	void shouldNotUpdateXInPositionIfInputNotValid() {
+
+		mockingScannerInput("2\n3\n");
+
+		List<String> positionList = Arrays.asList("1", "O", "3", "4", "5", "6", "7", "8", "9");
+
+		TicTacToe.playGame(positionList);
+
+		assertEquals("O", positionList.get(1));
+	}
+
 	private void mockBoardPositionsListValues() {
 		Mockito.when(boardPositions.get(0)).thenReturn("1");
 		Mockito.when(boardPositions.get(1)).thenReturn("2");

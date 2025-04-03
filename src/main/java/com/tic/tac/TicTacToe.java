@@ -40,8 +40,22 @@ public class TicTacToe {
 		System.out.println("Key in the position to Play : ");
 
 		int nextPosition = scanner.nextInt();
-		boardPositions.set(nextPosition - 1, "X");
 
+		setPositionIfValidInput(boardPositions, nextPosition);
+
+	}
+
+	private static void setPositionIfValidInput(List<String> boardPositions, int nextPosition) {
+		
+		if (isValidInput(boardPositions, nextPosition)) {
+			System.out.println("Invalid Move!! Please try another Position : ");
+		} else {
+			boardPositions.set(nextPosition - 1, "X");
+		}
+	}
+
+	private static boolean isValidInput(List<String> boardPositions, int nextPosition) {
+		return "X".equals(boardPositions.get(nextPosition - 1)) || "O".equals(boardPositions.get(nextPosition - 1));
 	}
 
 	private static void getInputFromPlayer2(List<String> boardPositions, Scanner scanner) {
