@@ -6,13 +6,14 @@ import java.util.Scanner;
 
 public class TicTacToe {
 
-	public static void main(String[] args) {
+	private static final String PLAYER_O = "O";
+	private static final String PLAYER_X = "X";
 
-		String lastPlayed = "";
+	public static void main(String[] args) {
 
 		List<String> boardPositions = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
-		playGame(boardPositions, lastPlayed);
+		playGame(boardPositions, "");
 	}
 
 	static void playGame(List<String> boardPositions, String lastPlayed) {
@@ -21,12 +22,12 @@ public class TicTacToe {
 
 		printTicTacBoard(boardPositions);
 
-		if (lastPlayed.equals("") || "O".equals(lastPlayed)) {
+		if (lastPlayed.equals("") || PLAYER_O.equals(lastPlayed)) {
 			getInputFromPlayer1(boardPositions, scanner);
-			lastPlayed = "X";
+			lastPlayed = PLAYER_X;
 		} else {
 			getInputFromPlayer2(boardPositions, scanner);
-			lastPlayed = "O";
+			lastPlayed = PLAYER_O;
 		}
 
 	}
@@ -42,16 +43,12 @@ public class TicTacToe {
 	}
 
 	private static void getInputFromPlayer1(List<String> boardPositions, Scanner scanner) {
-
-		System.out.println("Key in the position to Play : ");
-
-		int nextPosition = scanner.nextInt();
-
-		setPositionIfValidInput(boardPositions, nextPosition, "X");
-
+		setPositionIfValidInput(boardPositions, scanner.nextInt(), PLAYER_X);
 	}
 
 	private static void setPositionIfValidInput(List<String> boardPositions, int nextPosition, String player) {
+
+		System.out.println("Key in the position to Play : ");
 
 		if (isValidInput(boardPositions, nextPosition)) {
 			System.out.println("Invalid Move!! Please try another Position : ");
@@ -61,16 +58,11 @@ public class TicTacToe {
 	}
 
 	private static boolean isValidInput(List<String> boardPositions, int nextPosition) {
-		return "X".equals(boardPositions.get(nextPosition - 1)) || "O".equals(boardPositions.get(nextPosition - 1));
+		return PLAYER_X.equals(boardPositions.get(nextPosition - 1)) || PLAYER_O.equals(boardPositions.get(nextPosition - 1));
 	}
 
 	private static void getInputFromPlayer2(List<String> boardPositions, Scanner scanner) {
-
-		System.out.println("Key in the position to Play : ");
-
-		int nextPosition = scanner.nextInt();
-
-		setPositionIfValidInput(boardPositions, nextPosition, "O");
+		setPositionIfValidInput(boardPositions, scanner.nextInt(), PLAYER_O);
 	}
 
 }
