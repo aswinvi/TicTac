@@ -48,6 +48,18 @@ public class TicTacToe {
 		checkColumnForStrike(boardPositions);
 
 		checkDiagonallyForStrike(boardPositions);
+		
+		checkForDraw(boardPositions);
+	}
+
+	private void checkForDraw(List<String> boardPositions) {
+		if (matchForAnyNumber(boardPositions)) {
+		    	System.out.println("It's a draw!");
+		    }
+	}
+
+	private boolean matchForAnyNumber(List<String> boardPositions) {
+		return boardPositions.stream().noneMatch(pos -> pos.matches("\\d"));
 	}
 
 	private void checkDiagonallyForStrike(List<String> boardPositions) {

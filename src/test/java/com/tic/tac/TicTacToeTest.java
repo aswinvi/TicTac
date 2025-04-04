@@ -150,6 +150,7 @@ class TicTacToeTest {
 		assertEquals("X", positionList.get(6));
 		assertEquals("O", positionList.get(7));
 		assertEquals("O", positionList.get(8));
+		assertTrue(!ticTacToe.gameOver);
 
 	}
 
