@@ -3,15 +3,24 @@ package com.tic.tac;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
+
+import com.tic.tac.log.LoggingService;
 
 public class TicTacToe {
 
+	private static final String IT_S_A_DRAW = "It's a draw!";
+	private static final String PLAYER_TWO_IS_THE_WINNER = "Player Two is the Winner";
+	private static final String PLAYER_ONE_IS_THE_WINNER = "Player One is the Winner";
+	private static final String GAMER_OVER = "Game Over !! and the Winner is : ";
 	private static final String KEY_IN_THE_POSITION_TO_PLAY = "Key in the position to Play : ";
 	private static final String INVALID_MOVE_PLEASE_TRY_ANOTHER_POSITION = "Invalid Move!! Please try another Position : ";
 	private static final String PLAYER_O = "O";
 	private static final String PLAYER_X = "X";
 
 	boolean gameOver = false;
+
+	private static final Logger logger = LoggingService.getLogger();
 
 	public static void main(String[] args) {
 
@@ -48,14 +57,14 @@ public class TicTacToe {
 		checkColumnForStrike(boardPositions);
 
 		checkDiagonallyForStrike(boardPositions);
-		
+
 		checkForDraw(boardPositions);
 	}
 
 	private void checkForDraw(List<String> boardPositions) {
 		if (matchForAnyNumber(boardPositions)) {
-		    	System.out.println("It's a draw!");
-		    }
+			logger.info(IT_S_A_DRAW);
+		}
 	}
 
 	private boolean matchForAnyNumber(List<String> boardPositions) {
@@ -65,22 +74,25 @@ public class TicTacToe {
 	private void checkDiagonallyForStrike(List<String> boardPositions) {
 		if (isDiagonallyMatchedFromRightCorner(boardPositions)) {
 			gameOver = true;
-			String winner = PLAYER_X.equals(boardPositions.get(0)) ? "Player One is the Winner"
-					: "Player Two is the Winner";
-			System.out.println("Gamer Over!!" + winner);
+			String winner = populatesMessageToPrint(boardPositions, 0);
+			logger.info(String.format("%s %s", GAMER_OVER, winner));
 		}
-		
+
 		if (isDiagonallyMatchedFromLeftCorner(boardPositions)) {
-		    	gameOver=true;
-		    	String winner = PLAYER_X.equals(boardPositions.get(2)) ? "Player One is the Winner"
-						: "Player Two is the Winner";
-	        	System.out.println("Gamer Over!!" + winner);
-		    }
+			gameOver = true;
+			String winner = populatesMessageToPrint(boardPositions, 2);
+			logger.info(String.format("%s %s", GAMER_OVER, winner));
+		}
+	}
+
+	private String populatesMessageToPrint(List<String> boardPositions, int positionToCheck) {
+		return PLAYER_X.equals(boardPositions.get(positionToCheck)) ? PLAYER_ONE_IS_THE_WINNER
+				: PLAYER_TWO_IS_THE_WINNER;
 	}
 
 	private boolean isDiagonallyMatchedFromLeftCorner(List<String> boardPositions) {
-		return boardPositions.get(2).equals(boardPositions.get(4)) && 
-		        boardPositions.get(4).equals(boardPositions.get(6));
+		return boardPositions.get(2).equals(boardPositions.get(4))
+				&& boardPositions.get(4).equals(boardPositions.get(6));
 	}
 
 	private boolean isDiagonallyMatchedFromRightCorner(List<String> boardPositions) {
@@ -92,10 +104,8 @@ public class TicTacToe {
 		for (int index = 0; index < 3; index++) {
 			if (isVerticallyMatched(boardPositions, index)) {
 				gameOver = true;
-
-				String winner = PLAYER_X.equals(boardPositions.get(index)) ? "Player One is the Winner"
-						: "Player Two is the Winner";
-				System.out.println("Gamer Over!!" + winner);
+				String winner = populatesMessageToPrint(boardPositions, index);
+				logger.info(String.format("%s %s", GAMER_OVER, winner));
 			}
 		}
 	}
@@ -109,9 +119,8 @@ public class TicTacToe {
 		for (int index = 0; index < 9; index += 3) {
 			if (isHorizontallyMatched(boardPositions, index)) {
 				gameOver = true;
-				String winner = PLAYER_X.equals(boardPositions.get(index)) ? "Player One is the Winner"
-						: "Player Two is the Winner";
-				System.out.println("Gamer Over!!" + winner);
+				String winner = populatesMessageToPrint(boardPositions, index);
+				logger.info(String.format("%s %s", GAMER_OVER, winner));
 			}
 		}
 	}
@@ -138,23 +147,26 @@ public class TicTacToe {
 
 	private void printTicTacBoard(List<String> boardPositions) {
 
-		System.out.printf("%n %s | %s | %s %n", boardPositions.get(0), boardPositions.get(1), boardPositions.get(2));
-		System.out.println(" - + - + - ");
-		System.out.printf(" %s | %s | %s %n", boardPositions.get(3), boardPositions.get(4), boardPositions.get(5));
-		System.out.println(" - + - + - ");
-		System.out.printf(" %s | %s | %s %n%n", boardPositions.get(6), boardPositions.get(7), boardPositions.get(8));
+		logger.info(
+				String.format("%n %s | %s | %s", boardPositions.get(0), boardPositions.get(1), boardPositions.get(2)));
+		logger.info(" - + - + - ");
+		logger.info(
+				String.format(" %s | %s | %s", boardPositions.get(3), boardPositions.get(4), boardPositions.get(5)));
+		logger.info(" - + - + - ");
+		logger.info(
+				String.format(" %s | %s | %s%n", boardPositions.get(6), boardPositions.get(7), boardPositions.get(8)));
 
 	}
 
 	private void getInputFromPlayer1(List<String> boardPositions, Scanner scanner) {
-		System.out.println(KEY_IN_THE_POSITION_TO_PLAY);
+		logger.info(KEY_IN_THE_POSITION_TO_PLAY);
 		setPositionIfValidInput(boardPositions, scanner.nextInt(), PLAYER_X);
 	}
 
 	private void setPositionIfValidInput(List<String> boardPositions, int nextPosition, String player) {
 
 		if (isValidInput(boardPositions, nextPosition)) {
-			System.out.println(INVALID_MOVE_PLEASE_TRY_ANOTHER_POSITION);
+			logger.info(INVALID_MOVE_PLEASE_TRY_ANOTHER_POSITION);
 		} else {
 			boardPositions.set(nextPosition - 1, player);
 		}
@@ -166,7 +178,7 @@ public class TicTacToe {
 	}
 
 	private void getInputFromPlayer2(List<String> boardPositions, Scanner scanner) {
-		System.out.println(KEY_IN_THE_POSITION_TO_PLAY);
+		logger.info(KEY_IN_THE_POSITION_TO_PLAY);
 		setPositionIfValidInput(boardPositions, scanner.nextInt(), PLAYER_O);
 	}
 

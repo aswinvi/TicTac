@@ -49,7 +49,6 @@ class TicTacToeTest {
 		Mockito.verify(boardPositions, Mockito.atLeast(9)).get(8);
 	}
 
-
 	@Test
 	void shouldDisplay_X_WhenPlayerOnePlays() {
 
@@ -222,7 +221,7 @@ class TicTacToeTest {
 		assertEquals("X", positionList.get(0));
 		assertEquals("2", positionList.get(1));
 	}
-	
+
 	@Test
 	void closeTheGameWhenPlayerStrikesConsicutivePositionsDiagonallyFromLeft() {
 
