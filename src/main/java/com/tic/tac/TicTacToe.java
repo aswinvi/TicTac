@@ -11,7 +11,7 @@ public class TicTacToe {
 	private static final String PLAYER_O = "O";
 	private static final String PLAYER_X = "X";
 	
-	
+	static boolean gameOver =false;
 
 	public static void main(String[] args) {
 
@@ -24,7 +24,7 @@ public class TicTacToe {
 
 	static void playGame(List<String> boardPositions, String lastPlayed, int pendingMovesForPlayers, Scanner scanner) {
 		
-		 if (pendingMovesForPlayers <= 0 ) {
+		 if (pendingMovesForPlayers <= 0 || gameOver) {
 		        return;
 		    }
 
@@ -32,8 +32,26 @@ public class TicTacToe {
 
 		lastPlayed = getInputFromNextPlayer(boardPositions, lastPlayed, scanner);
 		
+		checkGameState(boardPositions);
+		
 		playGame(boardPositions, lastPlayed, pendingMovesForPlayers - 1, scanner);
 
+	}
+	
+	public static void checkGameState(List<String> boardPositions) {
+	    
+	    checkRowsForStrike(boardPositions);
+	}
+
+	private static void checkRowsForStrike(List<String> boardPositions) {
+		for (int index = 0; index < 9; index += 3) {
+	        if (boardPositions.get(index).equals(boardPositions.get(index + 1)) && 
+	            boardPositions.get(index + 1).equals(boardPositions.get(index + 2))) {
+	            gameOver=true;
+	            String winner = PLAYER_X.equals(boardPositions.get(index)) ? "Player One is the Winner" : "Player Two is the Winner";
+	        	System.out.println("Gamer Over!!" + winner);
+	        }
+	    }
 	}
 
 	private static String getInputFromNextPlayer(List<String> boardPositions, String lastPlayed, Scanner scanner) {

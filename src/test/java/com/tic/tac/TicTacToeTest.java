@@ -1,6 +1,7 @@
 package com.tic.tac;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
@@ -38,14 +39,14 @@ class TicTacToeTest {
 		
 		TicTacToe.playGame(boardPositions, "", 9, scanner);
 
-		Mockito.verify(boardPositions, Mockito.times(11)).get(0);
-		Mockito.verify(boardPositions, Mockito.times(11)).get(1);
+		Mockito.verify(boardPositions, Mockito.times(20)).get(0);
+		Mockito.verify(boardPositions, Mockito.times(20)).get(1);
 		Mockito.verify(boardPositions, Mockito.times(11)).get(2);
-		Mockito.verify(boardPositions, Mockito.times(11)).get(3);
-		Mockito.verify(boardPositions, Mockito.times(11)).get(4);
+		Mockito.verify(boardPositions, Mockito.times(20)).get(3);
+		Mockito.verify(boardPositions, Mockito.times(20)).get(4);
 		Mockito.verify(boardPositions, Mockito.times(11)).get(5);
-		Mockito.verify(boardPositions, Mockito.times(11)).get(6);
-		Mockito.verify(boardPositions, Mockito.times(11)).get(7);
+		Mockito.verify(boardPositions, Mockito.times(20)).get(6);
+		Mockito.verify(boardPositions, Mockito.times(20)).get(7);
 		Mockito.verify(boardPositions, Mockito.times(11)).get(8);
 	}
 
@@ -150,6 +151,28 @@ class TicTacToeTest {
 		assertEquals("X", positionList.get(7));
 		assertEquals("O", positionList.get(8));
 		
+	}
+	
+	@Test
+	void closeTheGameWhenPlayerStrikesConsicutiveRows() {
+
+		mockingScannerInput("5\n3\n7\n9\n6\n8\n4\n2\n1\n");
+		Scanner scanner = new Scanner(System.in);
+
+		List<String> positionList = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+
+		TicTacToe.playGame(positionList, "O", 9, scanner);
+
+		assertTrue(TicTacToe.gameOver);
+		assertEquals("O", positionList.get(2));
+		assertEquals("X", positionList.get(3));
+		assertEquals("X", positionList.get(4));
+		assertEquals("X", positionList.get(5));
+		assertEquals("X", positionList.get(6));
+		assertEquals("O", positionList.get(7));
+		assertEquals("O", positionList.get(8));
+		assertEquals("1", positionList.get(0));
+		assertEquals("2", positionList.get(1));
 	}
 
 
