@@ -34,20 +34,34 @@ public class TicTacToe {
 	}
 
 	public void playGame(List<String> boardPositions, String lastPlayed, int pendingMovesForPlayers, Scanner scanner) {
+		
+		if (listHasValue(boardPositions)) {
 
-		if (pendingMovesForPlayers <= 0 || gameOver) {
-			scanner.close();
-			return;
+			if (conditionToStopGame(pendingMovesForPlayers)) {
+				scanner.close();
+				return;
+			}
+
+			printTicTacBoard(boardPositions);
+
+			lastPlayed = getInputFromNextPlayer(boardPositions, lastPlayed, scanner);
+
+			checkGameState(boardPositions);
+
+			playGame(boardPositions, lastPlayed, pendingMovesForPlayers - 1, scanner);
+
+		} else {
+			logger.info("Game Configuration Failure !!");
 		}
 
-		printTicTacBoard(boardPositions);
+	}
 
-		lastPlayed = getInputFromNextPlayer(boardPositions, lastPlayed, scanner);
+	private boolean conditionToStopGame(int pendingMovesForPlayers) {
+		return pendingMovesForPlayers <= 0 || gameOver;
+	}
 
-		checkGameState(boardPositions);
-
-		playGame(boardPositions, lastPlayed, pendingMovesForPlayers - 1, scanner);
-
+	private boolean listHasValue(List<String> boardPositions) {
+		return null!=boardPositions&& !boardPositions.isEmpty() && boardPositions.size()==9;
 	}
 
 	public void checkGameState(List<String> boardPositions) {

@@ -3,6 +3,9 @@ package com.tic.tac;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -244,8 +247,29 @@ class TicTacToeTest {
 		assertEquals("X", positionList.get(0));
 		assertEquals("2", positionList.get(1));
 	}
+	
 
+	@Test
+	void errorWhileListIsEmptyOrNull() {
+		
+		Scanner scanner = new Scanner("5\n3\n7\n9\n8\n6\n4\n2\n1\n");
+
+		ticTacToe.playGame(boardPositions, "", 9, scanner);
+
+		scanner.close();
+
+		Mockito.verify(boardPositions, Mockito.never()).get(0);
+		Mockito.verify(boardPositions, Mockito.never()).get(1);
+		Mockito.verify(boardPositions, Mockito.never()).get(2);
+		Mockito.verify(boardPositions, Mockito.never()).get(3);
+		Mockito.verify(boardPositions, Mockito.never()).get(4);
+		Mockito.verify(boardPositions, Mockito.never()).get(5);
+		Mockito.verify(boardPositions, Mockito.never()).get(6);
+		Mockito.verify(boardPositions, Mockito.never()).get(7);
+		Mockito.verify(boardPositions, Mockito.never()).get(8);
+	}
 	private void mockBoardPositionsListValues() {
+		Mockito.when(boardPositions.size()).thenReturn(9);
 		Mockito.when(boardPositions.get(0)).thenReturn("1");
 		Mockito.when(boardPositions.get(1)).thenReturn("2");
 		Mockito.when(boardPositions.get(2)).thenReturn("3");
