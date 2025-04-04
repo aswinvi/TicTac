@@ -57,6 +57,18 @@ public class TicTacToe {
 					: "Player Two is the Winner";
 			System.out.println("Gamer Over!!" + winner);
 		}
+		
+		if (isDiagonallyMatchedFromLeftCorner(boardPositions)) {
+		    	gameOver=true;
+		    	String winner = PLAYER_X.equals(boardPositions.get(2)) ? "Player One is the Winner"
+						: "Player Two is the Winner";
+	        	System.out.println("Gamer Over!!" + winner);
+		    }
+	}
+
+	private boolean isDiagonallyMatchedFromLeftCorner(List<String> boardPositions) {
+		return boardPositions.get(2).equals(boardPositions.get(4)) && 
+		        boardPositions.get(4).equals(boardPositions.get(6));
 	}
 
 	private boolean isDiagonallyMatchedFromRightCorner(List<String> boardPositions) {
