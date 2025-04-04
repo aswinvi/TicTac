@@ -8,17 +8,23 @@ public class TicTacToe {
 
 	private static final String PLAYER_O = "O";
 	private static final String PLAYER_X = "X";
+	
+	
 
 	public static void main(String[] args) {
 
 		List<String> boardPositions = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+		
+		Scanner scanner = new Scanner(System.in);
 
-		playGame(boardPositions, "");
+		playGame(boardPositions, "", 9, scanner);
 	}
 
-	static void playGame(List<String> boardPositions, String lastPlayed) {
-
-		Scanner scanner = new Scanner(System.in);
+	static void playGame(List<String> boardPositions, String lastPlayed, int pendingMovesForPlayers, Scanner scanner) {
+		
+		 if (pendingMovesForPlayers <= 0 ) {
+		        return;
+		    }
 
 		printTicTacBoard(boardPositions);
 
@@ -29,6 +35,8 @@ public class TicTacToe {
 			getInputFromPlayer2(boardPositions, scanner);
 			lastPlayed = PLAYER_O;
 		}
+		
+		playGame(boardPositions, lastPlayed, pendingMovesForPlayers - 1, scanner);
 
 	}
 
@@ -48,8 +56,6 @@ public class TicTacToe {
 
 	private static void setPositionIfValidInput(List<String> boardPositions, int nextPosition, String player) {
 
-		System.out.println("Key in the position to Play : ");
-
 		if (isValidInput(boardPositions, nextPosition)) {
 			System.out.println("Invalid Move!! Please try another Position : ");
 		} else {
@@ -62,7 +68,8 @@ public class TicTacToe {
 	}
 
 	private static void getInputFromPlayer2(List<String> boardPositions, Scanner scanner) {
-		setPositionIfValidInput(boardPositions, scanner.nextInt(), PLAYER_O);
+		System.out.println("Key in the position to Play : ");
+		setPositionIfValidInput(boardPositions,scanner.nextInt(), PLAYER_O);
 	}
 
 }
