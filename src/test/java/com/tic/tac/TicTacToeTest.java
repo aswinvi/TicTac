@@ -175,6 +175,28 @@ class TicTacToeTest {
 		assertEquals("2", positionList.get(1));
 	}
 
+	@Test
+	void closeTheGameWhenPlayerStrikesConsicutiveColumn() {
+
+		mockingScannerInput("5\n3\n7\n6\n8\n9\n4\n2\n1\n");
+		Scanner scanner = new Scanner(System.in);
+
+		List<String> positionList = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+
+		TicTacToe.playGame(positionList, "O", 9, scanner);
+
+		assertTrue(TicTacToe.gameOver);
+		assertEquals("O", positionList.get(2));
+		assertEquals("4", positionList.get(3));
+		assertEquals("X", positionList.get(4));
+		assertEquals("X", positionList.get(5));
+		assertEquals("O", positionList.get(6));
+		assertEquals("X", positionList.get(7));
+		assertEquals("X", positionList.get(8));
+		assertEquals("1", positionList.get(0));
+		assertEquals("2", positionList.get(1));
+	}
+
 
 	private void mockBoardPositionsListValues() {
 		Mockito.when(boardPositions.get(0)).thenReturn("1");

@@ -41,17 +41,39 @@ public class TicTacToe {
 	public static void checkGameState(List<String> boardPositions) {
 	    
 	    checkRowsForStrike(boardPositions);
+	    
+	    checkColumnForStrike(boardPositions);
+	}
+
+	private static void checkColumnForStrike(List<String> boardPositions) {
+		for (int index = 0; index < 3; index++) {
+	        if (isVerticallyMatched(boardPositions, index)) {
+	        	gameOver=true;
+	        	
+	        	String winner = PLAYER_X.equals(boardPositions.get(index)) ? "Player One is the Winner" : "Player Two is the Winner";
+	        	System.out.println("Gamer Over!!" + winner);
+	        }
+	    }
+	}
+
+	private static boolean isVerticallyMatched(List<String> boardPositions, int index) {
+		return boardPositions.get(index).equals(boardPositions.get(index + 3)) && 
+		    boardPositions.get(index + 3).equals(boardPositions.get(index + 6));
 	}
 
 	private static void checkRowsForStrike(List<String> boardPositions) {
 		for (int index = 0; index < 9; index += 3) {
-	        if (boardPositions.get(index).equals(boardPositions.get(index + 1)) && 
-	            boardPositions.get(index + 1).equals(boardPositions.get(index + 2))) {
+	        if (isHorizontallyMatched(boardPositions, index)) {
 	            gameOver=true;
 	            String winner = PLAYER_X.equals(boardPositions.get(index)) ? "Player One is the Winner" : "Player Two is the Winner";
 	        	System.out.println("Gamer Over!!" + winner);
 	        }
 	    }
+	}
+
+	private static boolean isHorizontallyMatched(List<String> boardPositions, int index) {
+		return boardPositions.get(index).equals(boardPositions.get(index + 1)) && 
+		    boardPositions.get(index + 1).equals(boardPositions.get(index + 2));
 	}
 
 	private static String getInputFromNextPlayer(List<String> boardPositions, String lastPlayed, Scanner scanner) {
