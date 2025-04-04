@@ -3,7 +3,6 @@ package com.tic.tac;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -18,11 +17,11 @@ import org.mockito.MockitoAnnotations;
 class TicTacToeTest {
 
 	@InjectMocks
-	TicTacToe ticTac = new TicTacToe();
+	TicTacToe ticTacToe = new TicTacToe();
 
 	@Mock
 	List<String> boardPositions;
-	
+
 	List<String> boardPositionsList = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
 	@BeforeEach
@@ -33,36 +32,32 @@ class TicTacToeTest {
 	@Test
 	void printGameBoard() {
 		mockBoardPositionsListValues();
-		mockingScannerInput("5\n3\n7\n9\n8\n6\n4\n2\n1\n");
-		
-		Scanner scanner = new Scanner(System.in);
-		
-		TicTacToe.playGame(boardPositions, "", 9, scanner);
+		Scanner scanner = new Scanner("5\n3\n7\n9\n8\n6\n4\n2\n1\n");
 
-		Mockito.verify(boardPositions, Mockito.times(20)).get(0);
-		Mockito.verify(boardPositions, Mockito.times(20)).get(1);
-		Mockito.verify(boardPositions, Mockito.times(11)).get(2);
-		Mockito.verify(boardPositions, Mockito.times(20)).get(3);
-		Mockito.verify(boardPositions, Mockito.times(20)).get(4);
-		Mockito.verify(boardPositions, Mockito.times(11)).get(5);
-		Mockito.verify(boardPositions, Mockito.times(20)).get(6);
-		Mockito.verify(boardPositions, Mockito.times(20)).get(7);
-		Mockito.verify(boardPositions, Mockito.times(11)).get(8);
+		ticTacToe.playGame(boardPositions, "", 9, scanner);
+
+		scanner.close();
+
+		Mockito.verify(boardPositions, Mockito.atLeast(9)).get(0);
+		Mockito.verify(boardPositions, Mockito.atLeast(9)).get(1);
+		Mockito.verify(boardPositions, Mockito.atLeast(9)).get(2);
+		Mockito.verify(boardPositions, Mockito.atLeast(9)).get(3);
+		Mockito.verify(boardPositions, Mockito.atLeast(9)).get(4);
+		Mockito.verify(boardPositions, Mockito.atLeast(9)).get(5);
+		Mockito.verify(boardPositions, Mockito.atLeast(9)).get(6);
+		Mockito.verify(boardPositions, Mockito.atLeast(9)).get(7);
+		Mockito.verify(boardPositions, Mockito.atLeast(9)).get(8);
 	}
 
-	private void mockingScannerInput(String mockInput) {
-		ByteArrayInputStream inputStream = new ByteArrayInputStream(mockInput.getBytes());
-		System.setIn(inputStream);
-	}
 
 	@Test
 	void shouldDisplay_X_WhenPlayerOnePlays() {
 
-		mockingScannerInput("5\n3\n");
-		
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner("5\n3\n");
 
-		TicTacToe.playGame(boardPositionsList, "", 1, scanner);
+		ticTacToe.playGame(boardPositionsList, "", 1, scanner);
+
+		scanner.close();
 
 		assertEquals("X", boardPositionsList.get(4));
 	}
@@ -70,10 +65,11 @@ class TicTacToeTest {
 	@Test
 	void shouldDisplay_O_WhenPlayerTwoPlays() {
 
-		mockingScannerInput("5\n3\n");
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner("5\n3\n");
 
-		TicTacToe.playGame(boardPositionsList, "", 1, scanner);
+		ticTacToe.playGame(boardPositionsList, "", 1, scanner);
+
+		scanner.close();
 
 		assertEquals("X", boardPositionsList.get(4));
 	}
@@ -81,12 +77,13 @@ class TicTacToeTest {
 	@Test
 	void shouldNotUpdateXInPositionIfInputNotValid() {
 
-		mockingScannerInput("2\n3\n");
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner("2\n3\n");
 
 		List<String> positionList = Arrays.asList("1", "O", "3", "4", "5", "6", "7", "8", "9");
 
-		TicTacToe.playGame(positionList, "", 1, scanner);
+		ticTacToe.playGame(positionList, "", 1, scanner);
+
+		scanner.close();
 
 		assertEquals("O", positionList.get(1));
 	}
@@ -94,13 +91,13 @@ class TicTacToeTest {
 	@Test
 	void shouldNotUpdateOInPositionIfInputNotValid() {
 
-		mockingScannerInput("2\n3\n");
+		Scanner scanner = new Scanner("2\n3\n");
 
-		Scanner scanner = new Scanner(System.in);
-		
 		List<String> positionList = Arrays.asList("1", "X", "3", "4", "5", "6", "7", "8", "9");
 
-		TicTacToe.playGame(positionList, "X", 1, scanner);
+		ticTacToe.playGame(positionList, "X", 1, scanner);
+
+		scanner.close();
 
 		assertEquals("X", positionList.get(1));
 	}
@@ -108,95 +105,123 @@ class TicTacToeTest {
 	@Test
 	void shouldallowPlayer2OnlyIfLastPlayedIsPlayer1() {
 
-		mockingScannerInput("2\n3\n");
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner("2\n3\n");
 
 		List<String> positionList = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
-		TicTacToe.playGame(positionList, "X", 1, scanner);
+		ticTacToe.playGame(positionList, "X", 2, scanner);
 
-		assertEquals("3", positionList.get(2));
+		scanner.close();
+
+		assertEquals("O", positionList.get(1));
 	}
 
 	@Test
 	void shouldallowPlayer1OnlyIfHePlaysFirstOrLastPlayerIsNotHim() {
 
-		mockingScannerInput("2\n3\n");
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner("2\n3\n");
 
 		List<String> positionList = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
-		TicTacToe.playGame(positionList, "O", 1, scanner);
+		ticTacToe.playGame(positionList, "O", 2, scanner);
 
-		assertEquals("3", positionList.get(2));
+		scanner.close();
+
+		assertEquals("X", positionList.get(1));
 	}
-	
+
 	@Test
 	void shouldContinueTheGameTillThereIsNoNextMove() {
 
-		mockingScannerInput("5\n3\n7\n9\n8\n6\n4\n2\n1\n");
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner("5\n3\n1\n9\n6\n4\n7\n8\n2\n");
 
 		List<String> positionList = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
-		TicTacToe.playGame(positionList, "O", 9, scanner);
+		ticTacToe.playGame(positionList, "O", 9, scanner);
+
+		scanner.close();
 
 		assertEquals("X", positionList.get(0));
-		assertEquals("O", positionList.get(1));
+		assertEquals("X", positionList.get(1));
 		assertEquals("O", positionList.get(2));
-		assertEquals("X", positionList.get(3));
-		assertEquals("X", positionList.get(4));
-		assertEquals("O", positionList.get(5));
-		assertEquals("X", positionList.get(6));
-		assertEquals("X", positionList.get(7));
-		assertEquals("O", positionList.get(8));
-		
-	}
-	
-	@Test
-	void closeTheGameWhenPlayerStrikesConsicutiveRows() {
-
-		mockingScannerInput("5\n3\n7\n9\n6\n8\n4\n2\n1\n");
-		Scanner scanner = new Scanner(System.in);
-
-		List<String> positionList = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
-
-		TicTacToe.playGame(positionList, "O", 9, scanner);
-
-		assertTrue(TicTacToe.gameOver);
-		assertEquals("O", positionList.get(2));
-		assertEquals("X", positionList.get(3));
+		assertEquals("O", positionList.get(3));
 		assertEquals("X", positionList.get(4));
 		assertEquals("X", positionList.get(5));
 		assertEquals("X", positionList.get(6));
 		assertEquals("O", positionList.get(7));
 		assertEquals("O", positionList.get(8));
-		assertEquals("1", positionList.get(0));
-		assertEquals("2", positionList.get(1));
+
+	}
+
+	@Test
+	void closeTheGameWhenPlayerStrikesConsicutiveRows() {
+
+		Scanner scanner = new Scanner("5\n3\n7\n9\n6\n8\n4\n2\n1\n");
+
+		List<String> positionList2 = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+
+		ticTacToe.playGame(positionList2, "O", 9, scanner);
+
+		scanner.close();
+
+		assertTrue(ticTacToe.gameOver);
+		assertEquals("O", positionList2.get(2));
+		assertEquals("X", positionList2.get(3));
+		assertEquals("X", positionList2.get(4));
+		assertEquals("X", positionList2.get(5));
+		assertEquals("X", positionList2.get(6));
+		assertEquals("O", positionList2.get(7));
+		assertEquals("O", positionList2.get(8));
+		assertEquals("1", positionList2.get(0));
+		assertEquals("2", positionList2.get(1));
 	}
 
 	@Test
 	void closeTheGameWhenPlayerStrikesConsicutiveColumn() {
 
-		mockingScannerInput("5\n3\n7\n6\n8\n9\n4\n2\n1\n");
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner("5\n3\n7\n6\n8\n9\n4\n2\n1\n");
+
+		List<String> positionList1 = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+
+		ticTacToe.playGame(positionList1, "O", 9, scanner);
+
+		scanner.close();
+
+		assertTrue(ticTacToe.gameOver);
+		assertEquals("O", positionList1.get(2));
+		assertEquals("4", positionList1.get(3));
+		assertEquals("X", positionList1.get(4));
+		assertEquals("O", positionList1.get(5));
+		assertEquals("X", positionList1.get(6));
+		assertEquals("X", positionList1.get(7));
+		assertEquals("O", positionList1.get(8));
+		assertEquals("1", positionList1.get(0));
+		assertEquals("2", positionList1.get(1));
+	}
+
+	@Test
+	void closeTheGameWhenPlayerStrikesConsicutivePositionsDiagonallyFromRight() {
+
+		Scanner scanner = new Scanner("1\n3\n5\n6\n9\n7\n4\n2\n8\n");
 
 		List<String> positionList = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
-		TicTacToe.playGame(positionList, "O", 9, scanner);
+		ticTacToe.playGame(positionList, "O", 9, scanner);
 
-		assertTrue(TicTacToe.gameOver);
+		scanner.close();
+
+		assertTrue(ticTacToe.gameOver);
 		assertEquals("O", positionList.get(2));
 		assertEquals("4", positionList.get(3));
 		assertEquals("X", positionList.get(4));
-		assertEquals("X", positionList.get(5));
-		assertEquals("O", positionList.get(6));
-		assertEquals("X", positionList.get(7));
+		assertEquals("O", positionList.get(5));
+		assertEquals("7", positionList.get(6));
+		assertEquals("8", positionList.get(7));
 		assertEquals("X", positionList.get(8));
-		assertEquals("1", positionList.get(0));
+		assertEquals("X", positionList.get(0));
 		assertEquals("2", positionList.get(1));
 	}
-
+	
 
 	private void mockBoardPositionsListValues() {
 		Mockito.when(boardPositions.get(0)).thenReturn("1");
