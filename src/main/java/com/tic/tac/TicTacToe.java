@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 public class TicTacToe {
 
+	private static final String KEY_IN_THE_POSITION_TO_PLAY = "Key in the position to Play : ";
+	private static final String INVALID_MOVE_PLEASE_TRY_ANOTHER_POSITION = "Invalid Move!! Please try another Position : ";
 	private static final String PLAYER_O = "O";
 	private static final String PLAYER_X = "X";
 	
@@ -28,16 +30,25 @@ public class TicTacToe {
 
 		printTicTacBoard(boardPositions);
 
-		if (lastPlayed.equals("") || PLAYER_O.equals(lastPlayed)) {
+		lastPlayed = getInputFromNextPlayer(boardPositions, lastPlayed, scanner);
+		
+		playGame(boardPositions, lastPlayed, pendingMovesForPlayers - 1, scanner);
+
+	}
+
+	private static String getInputFromNextPlayer(List<String> boardPositions, String lastPlayed, Scanner scanner) {
+		if (isTurnForPlayerX(lastPlayed)) {
 			getInputFromPlayer1(boardPositions, scanner);
 			lastPlayed = PLAYER_X;
 		} else {
 			getInputFromPlayer2(boardPositions, scanner);
 			lastPlayed = PLAYER_O;
 		}
-		
-		playGame(boardPositions, lastPlayed, pendingMovesForPlayers - 1, scanner);
+		return lastPlayed;
+	}
 
+	private static boolean isTurnForPlayerX(String lastPlayed) {
+		return lastPlayed.equals("") || PLAYER_O.equals(lastPlayed);
 	}
 
 	private static void printTicTacBoard(List<String> boardPositions) {
@@ -57,7 +68,7 @@ public class TicTacToe {
 	private static void setPositionIfValidInput(List<String> boardPositions, int nextPosition, String player) {
 
 		if (isValidInput(boardPositions, nextPosition)) {
-			System.out.println("Invalid Move!! Please try another Position : ");
+			System.out.println(INVALID_MOVE_PLEASE_TRY_ANOTHER_POSITION);
 		} else {
 			boardPositions.set(nextPosition - 1, player);
 		}
@@ -68,7 +79,7 @@ public class TicTacToe {
 	}
 
 	private static void getInputFromPlayer2(List<String> boardPositions, Scanner scanner) {
-		System.out.println("Key in the position to Play : ");
+		System.out.println(KEY_IN_THE_POSITION_TO_PLAY);
 		setPositionIfValidInput(boardPositions,scanner.nextInt(), PLAYER_O);
 	}
 
